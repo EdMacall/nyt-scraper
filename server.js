@@ -40,6 +40,7 @@ app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with request
   axios.get("https://api.nytimes.com/svc/topstories/v2/home.json?api-key=b9f91d369ff59547cd47b931d8cbc56b%3A0%3A74623931").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
+    console.log(response.data.results[0].title);
     var $ = cheerio.load(response.data);
 
     // Now, we grab every h2 within an article tag, and do the following:
@@ -56,7 +57,9 @@ app.get("/scrape", function(req, res) {
         .attr("href");
       result.abstract = $(this)
         .children("a")
-        .attr("href");
+        .text();
+
+      console.log(result);
 
       // Create a new Article using the `result` object built from scraping
       db.Article
