@@ -1,16 +1,17 @@
-var express = require("express");
+// Dependencies
+var express    = require("express");
+var handlebars = require("express-handlebars");
+var mongoose   = require("mongoose");
 var bodyParser = require("body-parser");
-var logger = require("morgan");
-var mongoose = require("mongoose");
+var cheerio    = require("cheerio");
+var request    = require("request");
+
+var logger     = require("morgan");
+var axios      = require("axios");
 
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
 // It works on the client and on the server
-var axios = require("axios");
-var cheerio = require("cheerio");
-
-// Require all models
-var db = require("./models");
 
 var PORT = 3000;
 
@@ -21,10 +22,20 @@ var app = express();
 
 // Use morgan logger for logging requests
 app.use(logger("dev"));
+
 // Use body-parser for handling form submissions
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false 
+}));
+
 // Use express.static to serve the public folder as a static directory
 app.use(express.static("public"));
+
+// Require all models
+var db         = require("./models");
+// db.on("error", function(error) {
+//   console.log("Database Error: ", error);
+// });
 
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
@@ -41,27 +52,26 @@ app.get("/scrape", function(req, res) {
   axios.get("https://api.nytimes.com/svc/topstories/v2/home.json?api-key=b9f91d369ff59547cd47b931d8cbc56b%3A0%3A74623931").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     console.log(response.data.results[0].title);
-    var $ = cheerio.load(response.data);
+    var $ = response.data;
 
-    // Now, we grab every h2 within an article tag, and do the following:
-    $("article h2").each(function(i, element) {
-      // Save an empty result object
-      var result = {};
+    // Save an empty result object
+    var results = [];
+    var result = {};
 
-      // Add the text and href of every link, and save them as properties of the result object
-      result.title = $(this)
-        .children("a")
-        .text();
-      result.url = $(this)
-        .children("a")
-        .attr("href");
-      result.abstract = $(this)
-        .children("a")
-        .text();
+    // Add the text and href of every link, and save them as properties of the result object
+    for(var i = 0; i < $.results.length; i++)
+    {
+      result = {
+        "title": $.results[i].title,
+        "url": $.results[i].url,
+        "abstract": $.results[i].abstract
+      };
 
-      console.log(result);
+      results.push(result);
 
       // Create a new Article using the `result` object built from scraping
+      // TODO:  We do not actually want to save results to the  database,
+      //        or console log them,  but return them to the front end
       db.Article
         .create(result)
         .then(function(dbArticle) {
@@ -72,7 +82,12 @@ app.get("/scrape", function(req, res) {
           // If an error occurred, send it to the client
           res.json(err);
         });
-    });
+    }
+
+    console.log(Date.now());
+    console.log(results);
+
+    //  TODO:  Return the results
   });
 });
 
@@ -108,6 +123,7 @@ app.get("/articles/:id", function(req, res) {
     });
 });
 
+// TODO:  Fix this
 // Route for saving/updating an Article's associated Note
 app.post("/articles/:id", function(req, res) {
   // Create a new note and pass the req.body to the entry
@@ -128,6 +144,18 @@ app.post("/articles/:id", function(req, res) {
       res.json(err);
     });
 });
+
+// TODO:  Articles update? (id)
+
+// TODO:  Articles delete (id)
+
+// TODO:  Notes GET (Article id?)
+
+// TODO:  Note POST
+
+// TODO:  Note update (id)
+
+// TODO:  Note delete (id)
 
 // Start the server
 app.listen(PORT, function() {
