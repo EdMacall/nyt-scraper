@@ -11,6 +11,45 @@ $.getJSON("/articles", function(data) {
 });
 
 
+$(document).on("click", ".btn-danger", function() {
+  console.log("The Scrape New Articles button was clicked.");
+  $(".card-container").empty();
+  $.getJSON("/scrape", function(data) {
+  // For each one
+    for (var i = 0; i < 20; i++) {
+      // Display the apropos information on the page
+      var cardheader = new $("<div>");
+      cardheader.attr("class", "card-header");
+      cardheader.text(data[i].title);
+      var cardp = new $("<p>");
+      cardp.text(data[i].abstract);
+      var carda = new $("<a>");
+      carda.text(data[i].url);
+      var cardbody = new $("<div>");
+      cardbody.append(cardp);
+      cardbody.append(carda);
+      var card = new $("<div>");
+      card.attr("class", "card");
+      card.append(cardheader);
+      card.append(cardbody);
+      $(".card-container").append(card);
+    }
+  });
+});
+
+/*
+      <div class="card">
+        <div class="card-header" style="background-color: orange;">
+          Uh Oh.  Looks like we don't have any new articles.
+        </div>
+        <div class="card-body">
+          <p class="card-text"></p>
+          <a ></a>
+        </div>
+      </div>
+      */
+
+
 // Whenever someone clicks a p tag
 $(document).on("click", "p", function() {
   // Empty the notes from the note section

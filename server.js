@@ -72,22 +72,26 @@ app.get("/scrape", function(req, res) {
       // Create a new Article using the `result` object built from scraping
       // TODO:  We do not actually want to save results to the  database,
       //        or console log them,  but return them to the front end
+      /*
       db.Article
         .create(result)
         .then(function(dbArticle) {
           // If we were able to successfully scrape and save an Article, send a message to the client
           res.send("Scrape Complete");
+
         })
         .catch(function(err) {
           // If an error occurred, send it to the client
           res.json(err);
         });
+      */
     }
-
-    console.log(Date.now());
-    console.log(results);
+    
+    // console.log(Date.now());
+    // console.log(results);
 
     //  TODO:  Return the results
+    res.json(results);
   });
 });
 

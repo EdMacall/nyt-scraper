@@ -40,10 +40,14 @@ body {
 }
 
 .card-header {
-        background-color: lightblue;
+        background-color: #3F7FFF;
         color: #FFFFFF;
-        text-align: center;
+        
         font-size: 30px;
+}
+
+.btn-danger {
+
 }
 
 textarea, input {
