@@ -29,6 +29,23 @@ body {
         height: 500px;
 }
 
+.card {
+        margin:  20px;
+}
+
+.card-container {
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+}
+
+.card-header {
+        background-color: lightblue;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 30px;
+}
+
 textarea, input {
         display: block;
         width: 100%;
