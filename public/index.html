@@ -13,15 +13,6 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <a class="navbar-brand  mb-1 h1" href="#">Monge Scraper</a>
-      <!-- <button class="navbar-toggler"
-              type="button"
-              data-toggle="collapse"
-              data-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button> -->
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
@@ -29,7 +20,7 @@
             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Saved Articles</a>
+            <a class="nav-link saved-articles" href="#">Saved Articles</a>
           </li>
           <li class="nav-item">
             <button class="btn btn-danger my-2 my-sm-0" type="button">SCRAPE NEW ARTICLES</button>
@@ -61,6 +52,99 @@
       </div>
     </div>
 
+    <div id="wrapper">
+      <h1>Note Scraper</h1>
+      <h2><i>If you can do this...the homework should be no problem.</i></h2>
+      <div id="articles"></div>
+      <div id="notes"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade"
+         id="scrape-modal"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h1 id="modal-message" style="text-align: center;"></h1>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade"
+         id="scrape-modal"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h1 id="modal-message"></h1>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">SAVE NOTE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+            crossorigin="anonymous"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
+
+
+
+<!--
+    <div class="card-container">
+      <div class="card">
+        <div class="card-header" style="background-color: orange;">
+          <div class="nav-item pull-left">
+            asdadga
+          </div>
+          <div class="nav-item pull-right">
+            <button class="btn btn-success d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" type="button">
+              SAVE ARTICLE
+            </button>
+          /div>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title"></h4>
+          <p class="card-text"></p>
+          <a ></a>
+        </div>
+      </div>
+    </div>
+
     <div class="card-container">
       <div class="card text-xs-center">
         <div class="card-header" style="background-color: orange;">
@@ -70,13 +154,10 @@
             </li>
             <a class="btn btn-success nav-item pull-right" type="button">SAVE ARTICLE</a>
           </ul>
-
           <div class="card card-block card-primary">
             <p class="card-text">Want to know how much rent you could achieve for your property?&nbsp;</p>
             <a href="#" class="btn btn-primary-outline pull-right">Arrange a Valuation</a>
           </div>
-            
-
         </div>
         <div class="card-body">
           <h4 class="card-title"></h4>
@@ -95,13 +176,11 @@
                 asdadga
               </div>
               <div class="pull-right">
-                <button class="btn btn-success d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" type="button">SAVE ARTICLE
+                <button class="btn btn-success d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" type="button">
+                  SAVE ARTICLE
                 </button>
               </div>
             </div>
-
-            
-
           </div>
         </section>
         <div class="card-body">
@@ -112,13 +191,21 @@
       </div>
     </div>
 
-    <div id="wrapper">
-      <h1>Note Scraper</h1>
-      <h2><i>If you can do this...the homework should be no problem.</i></h2>
-      <div id="articles"></div>
-      <div id="notes"></div>
+    <div class="card-container">
+      <div class="card text-xs-center">
+        <div class="card-header" style="background-color: orange;">
+          <ul class="nav nav-tabs card-header-tabs ">
+            <li class="nav-item pull-left">
+              <a>uyfyufoug</a>
+            </li>
+            <a class="btn btn-success nav-item pull-right" type="button">SAVE ARTICLE</a>
+          </ul>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title"></h4>
+          <p class="card-text"></p>
+          <a ></a>
+        </div>
+      </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="app.js"></script>
-  </body>
-</html>
+  -->

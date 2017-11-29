@@ -1,3 +1,5 @@
+var scrapedarticles;
+
 // Grab the articles as a json
 $.getJSON("/articles", function(data) {
   // For each one
@@ -15,30 +17,88 @@ $(document).on("click", ".btn-danger", function() {
   console.log("The Scrape New Articles button was clicked.");
   $(".card-container").empty();
   $.getJSON("/scrape", function(data) {
-  // For each one
+
+    scrapedarticles = data;
+    // For each one    
     for (var i = 0; i < data.length; i++) {
       // Display the apropos information on the page
       var button = new $("<button>");
-      button.attr("class", "btn btn-success my-2 my-lg-0");
+      button.attr("class", "btn btn-success d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3");
+      button.attr("data-id", i);
       button.text("SAVE ARTICLE");
 
-      var form = new $("<form>");
-      form.attr("class", "form-inline my-2 my-lg-0");
-      form.attr("style", "float left;");
-      form.append(button);
+      var buttondiv = new $("<div>");
+      buttondiv.attr("class", "nav-item pull-right");
+      buttondiv.append(button);
 
       var headertitle = new $("<div>");
-      headertitle.attr("class", "navbar-brand mb-1 h1");
-      headertitle.attr("href", "#");
+      headertitle.attr("class", "nav-item pull-left");
       headertitle.text(data[i].title);
 
       var cardheader = new $("<div>");
       cardheader.attr("class", "card-header");
       cardheader.append(headertitle);
-      cardheader.append(form);
+      cardheader.append(buttondiv);
 
       var cardp = new $("<p>");
-      // cardp.attr("data-id", "'" + data[i]._id + "'");
+      cardp.text(data[i].abstract);
+
+      var carda = new $("<a>");
+      carda.attr("href", data[i].url);
+      carda.text(data[i].url);
+
+      var cardbody = new $("<div>");
+      cardbody.append(cardp);
+      cardbody.append(carda);
+
+      var card = new $("<div>");
+      card.attr("class", "card");
+      card.append(cardheader);
+      card.append(cardbody);
+      $(".card-container").append(card);
+    }
+    // TODO: Have a modal to tell us how many articles
+    //       we got from data.length
+    $("#modal-message").text("Added " + data.length + " new articles!");
+    $("#scrape-modal").modal();
+  });
+});
+
+
+$(document).on("click", ".saved-articles", function() {
+  console.log("The Saved Articles button was clicked.");
+  $(".card-container").empty();
+  $.getJSON("/articles", function(data) {
+    // For each one    
+    for (var i = 0; i < data.length; i++) {
+      // Display the apropos information on the page
+      // TODO: Fix this to save a note instead of saving an article
+      var deletebutton = new $("<button>");
+      deletebutton.attr("class", "btn btn-danger d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3 delete-btn");
+      deletebutton.attr("data-id", data[i]._id);
+      deletebutton.text("DELETE FROM SAVED");
+
+      var notesbutton = new $("<button>");
+      notesbutton.attr("class", "btn btn-success d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3 note-btn");
+      notesbutton.attr("style", "background-color: purple;");
+      notesbutton.attr("data-id", data[i]._id);
+      notesbutton.text("ARTICLE NOTES");
+
+      var buttondiv = new $("<div>");
+      buttondiv.attr("class", "nav-item pull-right");
+      buttondiv.append(notesbutton);
+      buttondiv.append(deletebutton);
+
+      var headertitle = new $("<div>");
+      headertitle.attr("class", "nav-item pull-left");
+      headertitle.text(data[i].title);
+
+      var cardheader = new $("<div>");
+      cardheader.attr("class", "card-header");
+      cardheader.append(headertitle);
+      cardheader.append(buttondiv);
+
+      var cardp = new $("<p>");
       cardp.text(data[i].abstract);
 
       var carda = new $("<a>");
@@ -58,6 +118,7 @@ $(document).on("click", ".btn-danger", function() {
   });
 });
 
+/*
 // Whenever someone clicks a p tag
 $(document).on("click", "p", function() {
   // Empty the notes from the note section
@@ -91,7 +152,9 @@ $(document).on("click", "p", function() {
       }
     });
 });
+*/
 
+/*
 // When you click the savenote button
 $(document).on("click", "#savenote", function() {
   // Grab the id associated with the article from the submit button
@@ -120,3 +183,4 @@ $(document).on("click", "#savenote", function() {
   $("#titleinput").val("");
   $("#bodyinput").val("");
 });
+*/
