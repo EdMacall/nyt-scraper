@@ -50,6 +50,10 @@ body {
 
 }
 
+.nav-item {
+        display: inline-block;
+}
+
 textarea, input {
         display: block;
         width: 100%;
