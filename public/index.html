@@ -83,9 +83,9 @@
       </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Note Modal -->
     <div class="modal fade"
-         id="scrape-modal"
+         id="note-modal"
          tabindex="-1"
          role="dialog"
          aria-labelledby="exampleModalLabel"
@@ -93,7 +93,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Modal title</h5>
+            <h5 class="modal-title">Notes For Article:</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -101,7 +101,9 @@
           <div class="modal-body">
             <h1 id="modal-message"></h1>
           </div>
-          <div class="modal-footer">
+          <div class="form-group modal-footer">
+            <label for="exampleFormControlTextarea1">New Note</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">SAVE NOTE</button>
           </div>
         </div>

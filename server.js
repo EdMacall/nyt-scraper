@@ -5,6 +5,7 @@ var mongoose   = require("mongoose");
 var bodyParser = require("body-parser");
 var cheerio    = require("cheerio");
 var request    = require("request");
+var promise    = require("promise");
 
 var logger     = require("morgan");
 var axios      = require("axios");
@@ -44,8 +45,28 @@ mongoose.connect("mongodb://localhost/nytscraper", {
   useMongoClient: true
 });
 
-// Routes
+function isInDataBase(result) {
+  try{
+    await db.Article
+    .findOne({ title:    result.title,
+               url:      result.url,
+               abstract: result.abstract })
+    .then(function(dbArticle) {
+      if(dbArticle) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+  }
+};
 
+// Routes
 // A GET route for scraping the echojs website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with request
@@ -57,17 +78,30 @@ app.get("/scrape", function(req, res) {
     // Save an empty result object
     var results = [];
     var result = {};
+    var resultscount = 0;
+    var test = false;
 
     // Add the text and href of every link, and save them as properties of the result object
     for(var i = 0; i < $.results.length; i++)
     {
+
       result = {
         "title": $.results[i].title,
         "url": $.results[i].url,
         "abstract": $.results[i].abstract
       };
 
-      results.push(result);
+      // TODO: We probably only want results which are not saved in the database.
+      // test = isInDataBase(result);
+      // if(!test) {
+        results.push(result);
+        resultscount++;
+      // }
+
+      // And we want to stop at 20 results because we were told to.
+      if(resultscount >= 20) {
+        break;
+      }
 
       // Create a new Article using the `result` object built from scraping
       // TODO:  We do not actually want to save results to the  database,
@@ -86,11 +120,10 @@ app.get("/scrape", function(req, res) {
         });
       */
     }
-    
+
     // console.log(Date.now());
     // console.log(results);
 
-    //  TODO:  Return the results
     res.json(results);
   });
 });
